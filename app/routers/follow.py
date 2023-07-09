@@ -1,8 +1,8 @@
 from .. import models, schemas
 from . import oauth2
 from sqlalchemy.orm import Session
-from fastapi import Response, status, HTTPException, Depends, APIRouter
-from typing import List, Optional
+from fastapi import status, HTTPException, Depends, APIRouter
+from typing import List
 
 from ..database import get_db
 
@@ -33,11 +33,11 @@ def create_follow(id: int, follow: schemas.FollowOut, db: Session = Depends(get_
 # deletes a follow from the database
 @router.delete("/{id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete_follow(id: int, db: Session = Depends(get_db), current_user: int = Depends(oauth2.get_current_user)):
-    follow_query = db.query(models.Follow).filter(models.Follow.id == id)
+    follow_query = db.query(models.Follow).filter(models.Follow.user_id == id, models.Follow.follower_id == current_user.id)
     deleted_follow = follow_query.first()
     if deleted_follow == None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
-                            detail=f"follow with id of {id} does not exist.")
+                            detail=f"You are not following user with id of {id}.")
     db.delete(deleted_follow)
     db.commit()
     return {'message': f'Unfollowed user with id of {id}.'}
