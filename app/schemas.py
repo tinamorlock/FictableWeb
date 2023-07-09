@@ -6,7 +6,10 @@ from typing import Optional
 
 class UserCreate(BaseModel):
     email: EmailStr
+    username: str
     password: str
+    is_author: bool = False
+
 
 class UserOut(BaseModel):
     id: int
