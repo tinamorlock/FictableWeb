@@ -138,3 +138,10 @@ class Quote(Base):
     owner_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
     book_id = Column(Integer, ForeignKey("books.id", ondelete="CASCADE"), nullable=False)
     character_id = Column(Integer, ForeignKey("characters.id", ondelete="CASCADE"), nullable=False)
+
+# allows users to follow other users
+
+class Follow(Base):
+    __tablename__ = "follows"
+    user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), primary_key=True)
+    follow_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), primary_key=True)
