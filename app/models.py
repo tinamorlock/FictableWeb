@@ -41,6 +41,14 @@ class User(Base):
     created_at = Column(TIMESTAMP(timezone=True), nullable=False, server_default=text('now()'))
 
 
+# friend list model for users to connect with each other
+
+class Friend(Base):
+    __tablename__ = "friends"
+    user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), primary_key=True)
+    friend_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), primary_key=True)
+
+
 # like system for social posts
 
 class Vote(Base):
@@ -56,8 +64,6 @@ class Book(Base):
 
     id = Column(Integer, primary_key=True, nullable=False)
     title = Column(String, nullable=False)
-    series_name = Column(String, nullable=True)
-    series_number = Column(Integer, nullable=True)
     published_year = Column(Integer, nullable=False)
     genre = Column(String, nullable=False)
     subgenre = Column(String, nullable=False)
@@ -70,3 +76,64 @@ class Book(Base):
     goodreads_link = Column(String, nullable=False)
     bookbub_link = Column(String, nullable=False)
     created_at = Column(TIMESTAMP(timezone=True), nullable=False, server_default=text('now()'))
+
+    owner_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
+    world_id = Column(Integer, ForeignKey("worlds.id", ondelete="CASCADE"), nullable=False)
+
+
+# the world model will allow authors to list their worlds on their profile
+
+class World(Base):
+    __tablename__ = "worlds"
+
+    id = Column(Integer, primary_key=True, nullable=False)
+    name = Column(String, nullable=False)
+    genre = Column(String, nullable=False)
+    subgenre = Column(String, nullable=False)
+    description = Column(String, nullable=False)
+    created_at = Column(TIMESTAMP(timezone=True), nullable=False, server_default=text('now()'))
+
+    owner_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
+
+
+# the character model will allow authors to list their characters on their profile
+
+class Character(Base):
+    __tablename__ = "characters"
+    id = Column(Integer, primary_key=True, nullable=False)
+    name = Column(String, nullable=False)
+    age = Column(Integer, nullable=False)
+    story_role = Column(String, nullable=False)
+    height = Column(String, nullable=False)
+    body_type = Column(String, nullable=False)
+    hair_color = Column(String, nullable=False)
+    eye_color = Column(String, nullable=False)
+    physical_description = Column(String, nullable=False)
+    personality_description = Column(String, nullable=False)
+    occupation = Column(String, nullable=False)
+    hobbies = Column(String, nullable=False)
+    educational_background = Column(String, nullable=False)
+    created_at = Column(TIMESTAMP(timezone=True), nullable=False, server_default=text('now()'))
+    tattoos = Column(String, nullable=False, server_default='None')
+    scars = Column(String, nullable=False, server_default='None')
+    piercings = Column(String, nullable=False, server_default='None')
+    other_features = Column(String, nullable=False, server_default='None')
+
+    world_id = Column(Integer, ForeignKey("worlds.id", ondelete="CASCADE"), nullable=False)
+    owner_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
+    book_id = Column(Integer, ForeignKey("books.id", ondelete="CASCADE"), nullable=False)
+
+
+# this model will allow authors to list dialogue quotes on their profile
+
+
+class Quote(Base):
+    __tablename__ = "quotes"
+    id = Column(Integer, primary_key=True, nullable=False)
+    quote = Column(String, nullable=False)
+    created_at = Column(TIMESTAMP(timezone=True), nullable=False, server_default=text('now()'))
+
+    world_id = Column(Integer, ForeignKey("worlds.id", ondelete="CASCADE"), nullable=False)
+    owner_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
+    book_id = Column(Integer, ForeignKey("books.id", ondelete="CASCADE"), nullable=False)
+    character_id = Column(Integer, ForeignKey("characters.id", ondelete="CASCADE"), nullable=False)
