@@ -41,18 +41,11 @@ class User(Base):
     created_at = Column(TIMESTAMP(timezone=True), nullable=False, server_default=text('now()'))
 
 
-# friend list model for users to connect with each other
-
-class Friend(Base):
-    __tablename__ = "friends"
-    user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), primary_key=True)
-    friend_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), primary_key=True)
-
 
 # like system for social posts
 
-class Vote(Base):
-    __tablename__ = "votes"
+class Like(Base):
+    __tablename__ = "likes"
     user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), primary_key=True)
     post_id = Column(Integer, ForeignKey("posts.id", ondelete="CASCADE"), primary_key=True)
 
@@ -72,9 +65,9 @@ class Book(Base):
     hardcover_price = Column(String, nullable=True)
     audiobook_price = Column(String, nullable=True)
     description = Column(String, nullable=False)
-    amazon_link = Column(String, nullable=False)
-    goodreads_link = Column(String, nullable=False)
-    bookbub_link = Column(String, nullable=False)
+    amazon_link = Column(String, nullable=True)
+    goodreads_link = Column(String, nullable=True)
+    bookbub_link = Column(String, nullable=True)
     created_at = Column(TIMESTAMP(timezone=True), nullable=False, server_default=text('now()'))
 
     owner_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
@@ -91,6 +84,7 @@ class World(Base):
     genre = Column(String, nullable=False)
     subgenre = Column(String, nullable=False)
     description = Column(String, nullable=False)
+    is_public = Column(Boolean, nullable=False, server_default='False')
     created_at = Column(TIMESTAMP(timezone=True), nullable=False, server_default=text('now()'))
 
     owner_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
@@ -102,8 +96,10 @@ class Character(Base):
     __tablename__ = "characters"
     id = Column(Integer, primary_key=True, nullable=False)
     name = Column(String, nullable=False)
+    is_public = Column(Boolean, nullable=False, server_default='False')
     age = Column(Integer, nullable=True)
     story_role = Column(String, nullable=True)
+    story_goal = Column(String, nullable=True)
     height = Column(String, nullable=True)
     body_type = Column(String, nullable=True)
     hair_color = Column(String, nullable=True)
