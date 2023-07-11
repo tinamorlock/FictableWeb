@@ -10,6 +10,12 @@ router = APIRouter(
     tags=['Users']
 )
 
+
+# shows logged in user's profile info
+@router.get("/me", response_model=schemas.UserOut)
+def get_current_user(current_user: schemas.UserOut = Depends(oauth2.get_current_user)):
+    return current_user
+
 # allows user to create an account 
 
 @router.post("/", status_code=status.HTTP_201_CREATED, response_model=schemas.UserOut)
@@ -36,7 +42,7 @@ def get_user(id: int, db: Session = Depends(get_db)):
     return user
 
 
-# updates user profile info (untested)
+# updates user profile info
 
 @router.put("/update", response_model=schemas.UserOut)
 def update_user(user: schemas.UserCreate, current_user: int = Depends(oauth2.get_current_user), db: Session = Depends(get_db)):

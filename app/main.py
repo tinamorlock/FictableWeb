@@ -19,6 +19,9 @@ app.include_router(user.router)
 app.include_router(auth.router)
 app.include_router(like.router)
 app.include_router(follow.router)
+# app.include_router(world.router)
+# app.include_router(book.router)
+# app.include_router(character.router)
 
 @app.get("/")
 def get_home():

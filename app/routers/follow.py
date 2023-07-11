@@ -1,8 +1,7 @@
-from .. import models, schemas
+from .. import models
 from . import oauth2
 from sqlalchemy.orm import Session
 from fastapi import status, HTTPException, Depends, APIRouter
-from typing import List
 
 from ..database import get_db
 
