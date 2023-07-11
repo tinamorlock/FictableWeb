@@ -63,3 +63,16 @@ class TokenData(BaseModel):
 class Like(BaseModel):
     post_id: int
     dir: conint(le=1)
+
+class WorldOut(BaseModel):
+    id: int
+    name: str
+    genre: str
+    subgenre: str
+    description: str
+    created_at: datetime
+    owner_id: int
+    owner: UserOut
+
+    class Config:
+        orm_mode=True
