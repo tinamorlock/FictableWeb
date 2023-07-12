@@ -42,7 +42,21 @@ class WorldBase(BaseModel):
     description: str
     genre: str
     subgenre: str
-    is_public: bool = False
+
+class BookBase(BaseModel):
+    title: str
+    published_year: int
+    genre: str
+    subgenre: str
+    description: str
+    amazon_link: Optional[str] = None
+    goodreads_link: Optional[str] = None
+    bookbub_link: Optional[str] = None
+    ebook_price: Optional[str] = None
+    paperback_price: Optional[str] = None
+    hardcover_price: Optional[str] = None
+    audiobook_price: Optional[str] = None
+    world_id: int
 
 class PostCreate(PostBase):
     pass
@@ -50,10 +64,23 @@ class PostCreate(PostBase):
 class WorldCreate(WorldBase):
     pass
 
+class BookCreate(BookBase):
+    pass
+
 class World(WorldBase):
     id: int
     created_at: datetime
     owner_id: int
+    world_id: int
+
+    class Config:
+        orm_mode=True
+
+class Book(BookBase):
+    id: int
+    created_at: datetime
+    owner_id: int
+    world_id: int
 
     class Config:
         orm_mode=True

@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from .routers import post, user, auth, like, follow, world
+from .routers import post, user, auth, like, follow, world, book
 from . import models 
 from .database import engine
 
@@ -20,7 +20,7 @@ app.include_router(auth.router)
 app.include_router(like.router)
 app.include_router(follow.router)
 app.include_router(world.router)
-# app.include_router(book.router)
+app.include_router(book.router)
 # app.include_router(character.router)
 
 @app.get("/")
