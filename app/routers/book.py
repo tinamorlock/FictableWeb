@@ -11,6 +11,13 @@ router = APIRouter(
 )
 
 
+# shows all of current user's books
+
+@router.get("/")
+def get_books(db: Session = Depends(get_db), current_user: int = Depends(oauth2.get_current_user)):
+    books = db.query(models.Book).filter(models.Book.owner_id == current_user.id).all()
+    return books
+
 # allows auther user to create a book
 
 @router.post("/", status_code=status.HTTP_201_CREATED, response_model=schemas.Book)
