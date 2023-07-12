@@ -56,3 +56,18 @@ def delete_world(id: int, db: Session = Depends(get_db), current_user: schemas.U
     db.delete(world)
     db.commit()
     return {'message': f'Deleted world with id of {id}.'}
+
+# updates a world
+
+@router.put("/{id}", response_model=schemas.World)
+def update_world(id: int, world: schemas.WorldCreate, db: Session = Depends(get_db), current_user: schemas.UserOut = Depends(oauth2.get_current_user)):
+    updated_world = db.query(models.World).filter(models.World.id == id)
+    worlds = updated_world.first()
+    if worlds == None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"World with ID {id} does not exist.")
+    if worlds.owner_id != current_user.id:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=f"You are not authorized to update this world.")
+
+    updated_world.update(world.dict(), synchronize_session=False)
+    db.commit()
+    return updated_world.first()

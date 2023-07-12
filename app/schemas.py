@@ -71,7 +71,6 @@ class World(WorldBase):
     id: int
     created_at: datetime
     owner_id: int
-    world_id: int
 
     class Config:
         orm_mode=True
