@@ -37,8 +37,26 @@ class PostBase(BaseModel):
     content: str
     published: bool = True
 
+class WorldBase(BaseModel):
+    name: str
+    description: str
+    genre: str
+    subgenre: str
+    is_public: bool = False
+
 class PostCreate(PostBase):
     pass
+
+class WorldCreate(WorldBase):
+    pass
+
+class World(WorldBase):
+    id: int
+    created_at: datetime
+    owner_id: int
+
+    class Config:
+        orm_mode=True
 
 class Post(PostBase):
     id: int
@@ -63,16 +81,3 @@ class TokenData(BaseModel):
 class Like(BaseModel):
     post_id: int
     dir: conint(le=1)
-
-class WorldOut(BaseModel):
-    id: int
-    name: str
-    genre: str
-    subgenre: str
-    description: str
-    created_at: datetime
-    owner_id: int
-    owner: UserOut
-
-    class Config:
-        orm_mode=True
