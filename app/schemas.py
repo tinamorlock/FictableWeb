@@ -37,6 +37,10 @@ class PostBase(BaseModel):
     content: str
     published: bool = True
 
+class CommentBase(BaseModel):
+    content: str
+    post_id: int
+
 class WorldBase(BaseModel):
     name: str
     description: str
@@ -59,6 +63,9 @@ class BookBase(BaseModel):
     world_id: int
 
 class PostCreate(PostBase):
+    pass
+
+class CommentCreate(CommentBase):
     pass
 
 class WorldCreate(WorldBase):
@@ -85,6 +92,15 @@ class Book(BookBase):
         orm_mode=True
 
 class Post(PostBase):
+    id: int
+    created_at: datetime
+    owner_id: int
+    owner: UserOut
+
+    class Config:
+        orm_mode=True
+
+class Comment(CommentBase):
     id: int
     created_at: datetime
     owner_id: int
