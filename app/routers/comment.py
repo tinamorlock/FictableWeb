@@ -19,3 +19,16 @@ def create_comment(comment: schemas.CommentCreate, db: Session = Depends(get_db)
     db.commit()
     db.refresh(new_comment)
     return new_comment
+
+# allows user to delete their comment
+
+@router.delete("/{id}", status_code=status.HTTP_204_NO_CONTENT)
+def delete_comment(id: int, db: Session = Depends(get_db), current_user: schemas.UserOut = Depends(oauth2.get_current_user)):
+    comment = db.query(models.Comment).filter(models.Comment.id == id).first()
+    if not comment:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Comment with ID {id} does not exist.")
+    if comment.owner_id != current_user.id:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=f"You are not authorized to delete this comment.")
+    db.delete(comment)
+    db.commit()
+    return {'message': f'Deleted comment with id of {id}.'}
