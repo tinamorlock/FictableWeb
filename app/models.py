@@ -156,3 +156,18 @@ class Follow(Base):
     __tablename__ = "follows"
     user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), primary_key=True)
     follow_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), primary_key=True)
+
+class Genre(Base):
+    __tablename__ = "genres"
+    id = Column(Integer, primary_key=True, nullable=False)
+    genre = Column(String, nullable=False)
+    created_at = Column(TIMESTAMP(timezone=True), nullable=False, server_default=text('now()'))
+
+class Subgenre(Base):
+    __tablename__ = "subgenres"
+    id = Column(Integer, primary_key=True, nullable=False)
+    subgenre = Column(String, nullable=False)
+    created_at = Column(TIMESTAMP(timezone=True), nullable=False, server_default=text('now()'))
+
+    genre_id = Column(Integer, ForeignKey("genres.id", ondelete="CASCADE"), nullable=False)
+
