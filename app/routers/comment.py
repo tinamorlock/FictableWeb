@@ -46,3 +46,13 @@ def update_comment(id: int, comment: schemas.CommentCreate, db: Session = Depend
     updated_comment.update(comment.dict(), synchronize_session=False)
     db.commit()
     return updated_comment.first()
+
+# allows user to reply to a comment
+
+@router.post("/reply/{id}", status_code=status.HTTP_201_CREATED, response_model=schemas.Comment)
+def reply_to_comment(id: int, comment: schemas.CommentCreate, db: Session = Depends(get_db), current_user: schemas.UserOut = Depends(oauth2.get_current_user)):
+    new_comment = models.Comment(owner_id=current_user.id, parent_id = id, **comment.dict())
+    db.add(new_comment)
+    db.commit()
+    db.refresh(new_comment)
+    return new_comment
