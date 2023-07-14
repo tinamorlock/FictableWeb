@@ -64,3 +64,16 @@ def update_character(id: int, character: schemas.CharacterCreate, db: Session = 
     character_query.update(character.dict())
     db.commit()
     return {"message": f"Character with ID {id} has been updated."}
+
+# delete a character
+
+@router.delete("/{id}", status_code=status.HTTP_204_NO_CONTENT)
+def delete_character(id: int, db: Session = Depends(get_db), current_user: schemas.UserOut = Depends(oauth2.get_current_user)):
+    character = db.query(models.Character).filter(models.Character.id == id)
+    if not character.first():
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Character with ID {id} does not exist.")
+    if character.first().owner_id != current_user.id:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=f"You are not the owner of this character.")
+    character.delete(synchronize_session=False)
+    db.commit()
+    return {"message": f"Character with ID {id} has been deleted."}
