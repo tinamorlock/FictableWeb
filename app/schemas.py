@@ -62,6 +62,29 @@ class BookBase(BaseModel):
     audiobook_price: Optional[str] = None
     world_id: int
 
+class CharacterBase(BaseModel):
+    name: str
+    world_id: int
+    book_id: int
+    is_public: bool = False
+    age: Optional[conint(ge=0)] = None
+    story_role: Optional[str] = None
+    story_goal: Optional[str] = None
+    height: Optional[str] = None
+    body_type: Optional[str] = None
+    hair_color: Optional[str] = None
+    eye_color: Optional[str] = None
+    physical_description: Optional[str] = None
+    personality_description: Optional[str] = None
+    occupation: Optional[str] = None
+    hobbies: Optional[str] = None
+    educational_background: Optional[str] = None
+    tattoos: Optional[str] = None
+    scars: Optional[str] = None
+    piercings: Optional[str] = None
+    other_features: Optional[str] = None
+    back_story: Optional[str] = None
+
 class PostCreate(PostBase):
     pass
 
@@ -72,6 +95,9 @@ class WorldCreate(WorldBase):
     pass
 
 class BookCreate(BookBase):
+    pass
+
+class CharacterCreate(CharacterBase):
     pass
 
 class World(WorldBase):
@@ -105,6 +131,16 @@ class Comment(CommentBase):
     created_at: datetime
     owner_id: int
     owner: UserOut
+
+    class Config:
+        orm_mode=True
+
+class Character(CharacterBase):
+    id: int
+    created_at: datetime
+    owner_id: int
+    world_id: int
+    book_id: int
 
     class Config:
         orm_mode=True

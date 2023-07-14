@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from .routers import post, user, auth, like, follow, world, book, comment
+from .routers import post, user, auth, like, follow, world, book, comment, character
 from . import models 
 from .database import engine
 
@@ -22,7 +22,7 @@ app.include_router(follow.router)
 app.include_router(world.router)
 app.include_router(book.router)
 app.include_router(comment.router)
-# app.include_router(character.router)
+app.include_router(character.router)
 
 @app.get("/")
 def get_home():
