@@ -173,3 +173,17 @@ class Subgenre(Base):
 
     genre_id = Column(Integer, ForeignKey("genres.id", ondelete="CASCADE"), nullable=False)
 
+class Services(Base):
+    __tablename__ = "services"
+    id = Column(Integer, primary_key=True, nullable=False)
+    service = Column(String, nullable=False)
+    created_at = Column(TIMESTAMP(timezone=True), nullable=False, server_default=text('now()'))
+
+class Provider(Base):
+    __tablename__ = "providers"
+    id = Column(Integer, primary_key=True, nullable=False)
+    name = Column(String, nullable=False)
+    description = Column(String, nullable=True)
+    created_at = Column(TIMESTAMP(timezone=True), nullable=False, server_default=text('now()'))
+
+    service_id = Column(Integer, ForeignKey("services.id", ondelete="CASCADE"), nullable=False)
