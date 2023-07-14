@@ -73,8 +73,6 @@ class Book(Base):
     id = Column(Integer, primary_key=True, nullable=False)
     title = Column(String, nullable=False)
     published_year = Column(Integer, nullable=False)
-    genre = Column(String, nullable=False)
-    subgenre = Column(String, nullable=False)
     ebook_price = Column(String, nullable=True)
     paperback_price = Column(String, nullable=True)
     hardcover_price = Column(String, nullable=True)
@@ -87,6 +85,9 @@ class Book(Base):
 
     owner_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
     world_id = Column(Integer, ForeignKey("worlds.id", ondelete="CASCADE"), nullable=False)
+    genre_id = Column(Integer, ForeignKey("genres.id", ondelete="CASCADE"), nullable=False)
+    subgenre_id = Column(Integer, ForeignKey("subgenres.id", ondelete="CASCADE"), nullable=False)
+    author_id = Column(Integer, ForeignKey("authors.id", ondelete="CASCADE"), nullable=False)
 
 
 # the world model will allow authors to list their worlds on their profile
@@ -96,13 +97,14 @@ class World(Base):
 
     id = Column(Integer, primary_key=True, nullable=False)
     name = Column(String, nullable=False)
-    genre = Column(String, nullable=False)
-    subgenre = Column(String, nullable=False)
     description = Column(String, nullable=False)
     is_public = Column(Boolean, nullable=False, server_default='False')
     created_at = Column(TIMESTAMP(timezone=True), nullable=False, server_default=text('now()'))
 
     owner_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
+    genre_id = Column(Integer, ForeignKey("genres.id", ondelete="CASCADE"), nullable=False)
+    subgenre_id = Column(Integer, ForeignKey("subgenres.id", ondelete="CASCADE"), nullable=False)
+    author_id = Column(Integer, ForeignKey("authors.id", ondelete="CASCADE"), nullable=False)
 
 
 # the character model will allow authors to list their characters on their profile
@@ -136,6 +138,7 @@ class Character(Base):
     book_id = Column(Integer, ForeignKey("books.id", ondelete="CASCADE"), nullable=False)
     genre_id = Column(Integer, ForeignKey("genres.id", ondelete="CASCADE"), nullable=False)
     subgenre_id = Column(Integer, ForeignKey("subgenres.id", ondelete="CASCADE"), nullable=False)
+    author_id = Column(Integer, ForeignKey("authors.id", ondelete="CASCADE"), nullable=False)
 
 
 # this model will allow authors to list dialogue quotes on their profile
@@ -151,6 +154,9 @@ class Quote(Base):
     owner_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
     book_id = Column(Integer, ForeignKey("books.id", ondelete="CASCADE"), nullable=False)
     character_id = Column(Integer, ForeignKey("characters.id", ondelete="CASCADE"), nullable=False)
+    author_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
+    genre_id = Column(Integer, ForeignKey("genres.id", ondelete="CASCADE"), nullable=False)
+    subgenre_id = Column(Integer, ForeignKey("subgenres.id", ondelete="CASCADE"), nullable=False)
 
 # allows users to follow other users
 
@@ -187,3 +193,14 @@ class Provider(Base):
     created_at = Column(TIMESTAMP(timezone=True), nullable=False, server_default=text('now()'))
 
     service_id = Column(Integer, ForeignKey("services.id", ondelete="CASCADE"), nullable=False)
+    owner_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
+
+class Author(Base):
+    __tablename__ = "authors"
+    id = Column(Integer, primary_key=True, nullable=False)
+    name = Column(String, nullable=False)
+    created_at = Column(TIMESTAMP(timezone=True), nullable=False, server_default=text('now()'))
+
+    genre_id = Column(Integer, ForeignKey("genres.id", ondelete="CASCADE"), nullable=False)
+    subgenre_id = Column(Integer, ForeignKey("subgenres.id", ondelete="CASCADE"), nullable=False)
+    owner_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
