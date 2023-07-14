@@ -125,15 +125,17 @@ class Character(Base):
     hobbies = Column(String, nullable=True)
     educational_background = Column(String, nullable=True)
     created_at = Column(TIMESTAMP(timezone=True), nullable=False, server_default=text('now()'))
-    tattoos = Column(String, nullable=False, server_default='None')
-    scars = Column(String, nullable=False, server_default='None')
-    piercings = Column(String, nullable=False, server_default='None')
-    other_features = Column(String, nullable=False, server_default='None')
+    tattoos = Column(String, nullable=False, server_default='False')
+    scars = Column(String, nullable=False, server_default='False')
+    piercings = Column(String, nullable=False, server_default='False')
+    other_features = Column(String, nullable=False, server_default='False')
     back_story = Column(String, nullable=True)
 
     world_id = Column(Integer, ForeignKey("worlds.id", ondelete="CASCADE"), nullable=False)
     owner_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
     book_id = Column(Integer, ForeignKey("books.id", ondelete="CASCADE"), nullable=False)
+    genre_id = Column(Integer, ForeignKey("genres.id", ondelete="CASCADE"), nullable=False)
+    subgenre_id = Column(Integer, ForeignKey("subgenres.id", ondelete="CASCADE"), nullable=False)
 
 
 # this model will allow authors to list dialogue quotes on their profile

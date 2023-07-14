@@ -66,6 +66,8 @@ class CharacterBase(BaseModel):
     name: str
     world_id: int
     book_id: int
+    genre_id: int
+    subgenre_id: int
     is_public: bool = False
     age: Optional[int]
     story_role: Optional[str]
@@ -141,6 +143,8 @@ class Character(CharacterBase):
     owner_id: int
     world_id: int
     book_id: int
+    subgenre_id: int
+    genre_id: int
 
     class Config:
         orm_mode=True

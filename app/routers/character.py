@@ -53,7 +53,7 @@ def get_character(id: int, db: Session = Depends(get_db), current_user: schemas.
     return character
 
 # update a character
-@router.put("/{id}", response_model=schemas.Character)
+@router.put("/{id}", status_code=status.HTTP_202_ACCEPTED)
 def update_character(id: int, character: schemas.CharacterCreate, db: Session = Depends(get_db), current_user: schemas.UserOut = Depends(oauth2.get_current_user)):
     character_query = db.query(models.Character).filter(models.Character.id == id)
     found_character = character_query.first()
@@ -62,3 +62,5 @@ def update_character(id: int, character: schemas.CharacterCreate, db: Session = 
     if found_character.owner_id != current_user.id:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=f"You are not the owner of this character.")
     character_query.update(character.dict())
+    db.commit()
+    return {"message": f"Character with ID {id} has been updated."}
