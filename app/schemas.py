@@ -67,23 +67,23 @@ class CharacterBase(BaseModel):
     world_id: int
     book_id: int
     is_public: bool = False
-    age: Optional[conint(ge=0)] = None
-    story_role: Optional[str] = None
-    story_goal: Optional[str] = None
-    height: Optional[str] = None
-    body_type: Optional[str] = None
-    hair_color: Optional[str] = None
-    eye_color: Optional[str] = None
-    physical_description: Optional[str] = None
-    personality_description: Optional[str] = None
-    occupation: Optional[str] = None
-    hobbies: Optional[str] = None
-    educational_background: Optional[str] = None
-    tattoos: Optional[str] = None
-    scars: Optional[str] = None
-    piercings: Optional[str] = None
-    other_features: Optional[str] = None
-    back_story: Optional[str] = None
+    age: Optional[int]
+    story_role: Optional[str]
+    story_goal: Optional[str]
+    height: Optional[str]
+    body_type: Optional[str]
+    hair_color: Optional[str]
+    eye_color: Optional[str]
+    physical_description: Optional[str]
+    personality_description: Optional[str]
+    occupation: Optional[str]
+    hobbies: Optional[str]
+    educational_background: Optional[str]
+    tattoos: Optional[str] = False
+    scars: Optional[str] = False
+    piercings: Optional[str] = False
+    other_features: Optional[str] = False
+    back_story: Optional[str]
 
 class PostCreate(PostBase):
     pass
