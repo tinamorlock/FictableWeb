@@ -61,6 +61,9 @@ class BookBase(BaseModel):
     hardcover_price: Optional[str] = None
     audiobook_price: Optional[str] = None
     world_id: int
+    genre_id: int
+    subgenre_id: int
+    author_id: int
 
 class CharacterBase(BaseModel):
     name: str
