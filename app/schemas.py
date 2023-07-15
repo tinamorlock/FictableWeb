@@ -44,8 +44,19 @@ class CommentBase(BaseModel):
 class WorldBase(BaseModel):
     name: str
     description: str
-    genre: str
-    subgenre: str
+    author_id: int
+    genre_id: int
+    subgenre_id: int
+    is_public: bool = False
+
+class QuoteBase(BaseModel):
+    quote: str
+    book_id: int
+    character_id: int
+    world_id: int
+    author_id: int
+    genre_id: int
+    subgenre_id: int
 
 class BookBase(BaseModel):
     title: str
@@ -71,6 +82,7 @@ class CharacterBase(BaseModel):
     book_id: int
     genre_id: int
     subgenre_id: int
+    author_id: int
     is_public: bool = False
     age: Optional[int]
     story_role: Optional[str]
@@ -99,6 +111,9 @@ class CommentCreate(CommentBase):
 class WorldCreate(WorldBase):
     pass
 
+class QuoteCreate(QuoteBase):
+    pass
+
 class BookCreate(BookBase):
     pass
 
@@ -109,6 +124,23 @@ class World(WorldBase):
     id: int
     created_at: datetime
     owner_id: int
+    genre_id: int
+    subgenre_id: int
+    author_id: int
+
+    class Config:
+        orm_mode=True
+
+class Quote(QuoteBase):
+    id: int
+    created_at: datetime
+    owner_id: int
+    author_id = int
+    world_id = int
+    genre_id = int
+    subgenre_id = int
+    book_id = int
+    character_id = int
 
     class Config:
         orm_mode=True
@@ -118,6 +150,9 @@ class Book(BookBase):
     created_at: datetime
     owner_id: int
     world_id: int
+    genre_id = int
+    subgenre_id = int
+    author_id = int
 
     class Config:
         orm_mode=True
