@@ -66,3 +66,11 @@ def create_quotes(quote: schemas.QuoteCreate, db: Session = Depends(get_db), cur
     db.refresh(new_quote)
     return new_quote
 
+# gets current user's quotes
+
+@router.get("/my-quotes", status_code=status.HTTP_200_OK, response_model=schemas.Quote)
+def get_my_quotes(db: Session = Depends(get_db), current_user: schemas.UserOut = Depends(oauth2.get_current_user)):
+    quotes = db.query(models.Quote).filter(models.Quote.owner_id == current_user.id).all()
+    if not quotes:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="You have not added any quotes yet.")
+    return quotes
