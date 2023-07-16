@@ -204,3 +204,21 @@ class Author(Base):
     genre_id = Column(Integer, ForeignKey("genres.id", ondelete="CASCADE"), nullable=False)
     subgenre_id = Column(Integer, ForeignKey("subgenres.id", ondelete="CASCADE"), nullable=False)
     owner_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
+
+class Review(Base):
+    __tablename__ = "reviews"
+    id = Column(Integer, primary_key=True, nullable=False)
+    content = Column(String, nullable=False)
+    story_rating = Column(Integer, nullable=True)
+    character_rating = Column(Integer, nullable=True)
+    world_rating = Column(Integer, nullable=True)
+    author_rating = Column(Integer, nullable=True)
+    provider_rating = Column(Integer, nullable=True)
+    created_at = Column(TIMESTAMP(timezone=True), nullable=False, server_default=text('now()'))
+
+    reviewer_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
+    book_id = Column(Integer, ForeignKey("books.id", ondelete="CASCADE"), nullable=True)
+    character_id = Column(Integer, ForeignKey("characters.id", ondelete="CASCADE"), nullable=True)
+    world_id = Column(Integer, ForeignKey("worlds.id", ondelete="CASCADE"), nullable=True)
+    author_id = Column(Integer, ForeignKey("authors.id", ondelete="CASCADE"), nullable=True)
+    provider_id = Column(Integer, ForeignKey("providers.id", ondelete="CASCADE"), nullable=True)
